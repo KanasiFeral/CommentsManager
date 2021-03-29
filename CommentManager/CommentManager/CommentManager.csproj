@@ -37,6 +37,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="NLog" Version="4.7.9" />
     <PackageReference Include="NLog.Config" Version="4.7.9" />
+    <PackageReference Include="popper.js" Version="1.16.1" />
     <PackageReference Include="X.PagedList.Mvc.Core" Version="8.0.7" />
   </ItemGroup>
 

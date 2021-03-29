@@ -4,14 +4,14 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CommentManager.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+
+        private static List<Comment> _comments;
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -37,7 +37,22 @@ namespace CommentManager.Controllers
                 });
             }
 
+            _comments.Add(new Comment()
+            {
+                UserName = userName,
+                Message = message                
+            });
+
             return Json(new { divId = "sendMessageBlock", message = "Comment has been added!", btnId = "sendFeedbackBtn", time = 5000 });
+        }
+
+        [HttpPost]
+        public IActionResult Comments(int? page)
+        {
+            ViewBag.Page = page.HasValue ? Convert.ToInt32(page) : 1;
+            ViewBag.CommentsList = _comments;
+
+            return PartialView("~/Views/Home/PartialViews/Comments.cshtml");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

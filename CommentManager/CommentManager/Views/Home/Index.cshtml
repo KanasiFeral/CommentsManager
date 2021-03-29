@@ -35,12 +35,35 @@
             <button id="sendMessageBtn" type="submit" class="btn btn-primary btn-block">Comment</button>
         </form>
     </div>
-</section> 
+</section>
 <hr />
 <section>
     <h3>
         Comments:
     </h3>
     <br />
-
+    <div id="PartialViewId"></div>
 </section>
+
+@section Scripts{
+    <script>
+        $(window).on("load", function () {
+        $.ajax({
+            url: "/Home/Comments",
+            type: "POST",
+            data: {
+                page: 1,
+            },
+            dataType: "html",
+            beforeSend: function () {
+                $('#PartialViewId').html("<img src=\"../../gif/Loading.gif\"/>");
+            },
+            success: function (data) {
+                $("#PartialViewId").html(data);
+            },
+            error: function () {
+                $("#PartialViewId").html("<li>Error</li>");
+            }});
+    });
+    </script>
+}

@@ -1,0 +1,125 @@
+﻿<link rel="stylesheet" type="text/css" href="~/css/pagedList.css">
+
+@*import this so we get our HTML Helper*@
+@using X.PagedList.Mvc.Core;
+
+@*import this so we can cast our list to IPagedList (only necessary because ViewBag is dynamic)*@
+@using X.PagedList.Mvc.Core.Common
+
+<ul>
+    <!-- Single Comment Area -->
+
+    @if (ViewBag.CommentsList != null & ViewBag.CommentsList.Count > 0)
+    {
+        foreach (var item in ViewBag.CommentsList)
+        {
+            <li>
+
+            </li>
+        }
+
+        @Html.PagedListPager((X.PagedList.IPagedList)ViewBag.CommentsList, page => Url.Action("Comments", "Home", new { Page = page }),
+            PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "POST", UpdateTargetId = "PartialViewId" }))
+    }
+    else
+    {
+        <li>
+            <h4>
+                No comments
+            </h4>
+        </li>
+    }
+</ul>
+
+@section Scripts{
+    <script type="text/javascript" src="~/js/site.js"></script>
+}
+
+<script>
+
+    /*
+     0 - input with user nickname
+     1 - first level comment form
+     2 - block with second level of comments
+     */
+
+    var replyCancelId = "";
+    var allCommentsId = "";
+
+    $(".replyFirstLvl").click(function () {
+        // Show all reply buttons on the page
+        $(".replyFirstLvl").show();
+        // Hide all comment windows on page
+        $(".formComments").hide();
+
+        // Get unique attribute by name (unique form comment id)
+        replyCancelId = $(this).attr("name");
+
+        // Checking condition of reply comments block. If block displayed then focus to their form below, if not then open nearest form
+        if ($("." + replyCancelId).eq(2).css("display") === "none") {
+            // Hide current reply button
+            $(this).hide();
+            // Opening the comment adding window by unique class with position 1
+            $("." + replyCancelId).eq(1).show();
+            // When you click on the answer button, the nickname of the one to whose comment the answer is displayed in the text area field
+            $("." + replyCancelId + " textarea").val($("." + replyCancelId).eq(0).attr("name") + ", ");
+            $("." + replyCancelId + " textarea").focus();
+        }
+        else {
+            // Get unique attribute by name (user login)
+            // When you click on the answer button, the nickname of the one to whose comment the answer is displayed in the text area field
+            $(".formSecondlvlComments textarea").val($("." + replyCancelId).eq(0).attr("name") + ", ");
+            $(".formSecondlvlComments textarea").focus();
+        }
+    });
+
+    $(".replyCancel").click(function () {
+        // Hiding the comment adding window by unique class with position 1
+        $("." + replyCancelId).eq(1).hide();
+        // Opening the reply button by unique name
+        $("a[name='" + replyCancelId + "']").eq(0).show();
+        // Clearing text in textarea
+        $("." + replyCancelId + " textarea").val("");
+    });
+
+    $(".replyCancelSecondLvl").click(function () {
+        $(".formSecondlvlComments textarea").val("");
+    });
+
+    $(".showAllComments").click(function () {
+
+        // Insert event-click on the new blocks
+        var replyButtons = $(".replySecondLvl");
+
+        // Add "on click" event for all buttons in second lvl of comments
+        Array.from(replyButtons).forEach(function (element) {
+            element.addEventListener('click', function () {
+                $(".formSecondlvlComments textarea").val($(this).attr("name") + ", ");
+                $(".formSecondlvlComments textarea").focus();
+            });
+        });
+
+        // Get unique attribute by name (unique "all comments" div id)
+        allCommentsId = $(this).attr("name");
+
+        // If the comment reply window is open (first branch), then close it
+        if ($("." + allCommentsId).eq(1).css('display') === "block") {
+            // Close the form
+            $("." + allCommentsId).eq(1).css("display", "none");
+            // Clearing text in textarea
+            $(".formComments textarea").text("");
+            // Opening the reply button by unique name
+            $("a[name='" + allCommentsId + "']").show();
+            // Clear second branch text field
+            $(".formSecondlvlComments textarea").val("");
+        }
+
+        // If the block with response comments has the "display" property as "none", then show this block
+        if ($("." + allCommentsId).eq(2).css('display') === "none") {
+            $("." + allCommentsId).eq(2).css("display", "block");
+        }
+        // If the block with response comments has the "display" property as "block", then hide this block
+        else {
+            $("." + allCommentsId).eq(2).css("display", "none");
+        }
+    });
