@@ -1,6 +1,6 @@
 using System;
 
-namespace CommentsManager.Models
+namespace CommentManager.Models
 {
     public class ErrorViewModel
     {

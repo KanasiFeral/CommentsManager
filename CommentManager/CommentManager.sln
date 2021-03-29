@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommentsManager", "CommentsManager\CommentsManager.csproj", "{91ECDFE2-4015-4BF2-9DF2-518BE2B34944}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommentManager", "CommentManager\CommentManager.csproj", "{0BA8B22B-CF1D-49F5-A238-3EBF242C8D9C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{91ECDFE2-4015-4BF2-9DF2-518BE2B34944}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{91ECDFE2-4015-4BF2-9DF2-518BE2B34944}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{91ECDFE2-4015-4BF2-9DF2-518BE2B34944}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{91ECDFE2-4015-4BF2-9DF2-518BE2B34944}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BA8B22B-CF1D-49F5-A238-3EBF242C8D9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BA8B22B-CF1D-49F5-A238-3EBF242C8D9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BA8B22B-CF1D-49F5-A238-3EBF242C8D9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BA8B22B-CF1D-49F5-A238-3EBF242C8D9C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {80681673-F09B-4BB8-A972-877243F3F1FD}
+		SolutionGuid = {DD82AFFC-EA4C-4746-89BF-375BCFB08AE1}
 	EndGlobalSection
 EndGlobal

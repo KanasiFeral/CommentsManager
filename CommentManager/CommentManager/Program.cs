@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CommentsManager
+namespace CommentManager
 {
     public class Program
     {
