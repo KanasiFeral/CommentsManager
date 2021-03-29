@@ -13,21 +13,26 @@
 <hr />
 <section>
     <div class="d-flex justify-content-center">
-        <form>
+        <form asp-controller="Home" asp-action="SendMessage" data-ajax="true" data-ajax-method="Post" data-ajax-success="AlertMessage">
             <!-- Login input -->
             <div class="form-outline mb-4">
                 <label class="form-label">Username</label>
-                <input type="text" id="userNameId" class="form-control" required/>
+                <input name="userName" type="text" id="userNameId" class="form-control" placeholder="Username" required />
             </div>
 
             <!-- Comment input -->
             <div class="form-outline mb-4">
                 <label class="form-label">Message</label>
-                <textarea style="max-height: 200px; height: 50px; min-height: 50px;" id="MessageId" class="form-control" required></textarea>
+                <textarea name="Message" style="max-height: 200px; height: 50px; min-height: 50px;" id="MessageId" class="form-control" placeholder="Message" required></textarea>
+            </div>
+
+            <!-- Info block -->
+            <div class="form-group">
+                <div id="sendMessageBlock"></div>
             </div>
 
             <!-- Submit button -->
-            <button type="submit" class="btn btn-primary btn-block">Comment</button>
+            <button id="sendMessageBtn" type="submit" class="btn btn-primary btn-block">Comment</button>
         </form>
     </div>
 </section> 

@@ -23,9 +23,21 @@ namespace CommentManager.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        [HttpPost]
+        public IActionResult SendMessage(string userName, string message)
         {
-            return View();
+            if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(message))
+            {
+                return Json(new
+                {
+                    divId = "sendMessageBlock",
+                    message = "All fields are required!",
+                    btnId = "sendMessageBtn",
+                    time = 5000
+                });
+            }
+
+            return Json(new { divId = "sendMessageBlock", message = "Comment has been added!", btnId = "sendFeedbackBtn", time = 5000 });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
