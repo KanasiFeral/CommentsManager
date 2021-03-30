@@ -6,15 +6,30 @@
 @*import this so we can cast our list to IPagedList (only necessary because ViewBag is dynamic)*@
 @using X.PagedList.Mvc.Core.Common
 
-<ul>
+<ul class="list-group list-group-flush">
     <!-- Single Comment Area -->
 
     @if (ViewBag.CommentsList != null & ViewBag.CommentsList.Count > 0)
     {
         foreach (var item in ViewBag.CommentsList)
         {
-            <li>
+            <li class="list-group-item">
+                <p>
+                    User: @item.UserName<br />
+                    Data: @item.Message<br />
+                    Date: @item.CommentDate<br />
+                    Time: @item.CommentTime
+                </p>
 
+                @{
+                    string btnReply = "btnReply-" + item.Id;
+
+                    string divId = "divId-" + item.Id, divReplyId = "divReplyId-" + item.Id;
+
+                    string btnId = "btnId-" + item.Id, btnReplyId = "btnReplyId-" + item.Id;
+                }
+
+                <a href="javascript: void(0)" name="@btnReply" class="reply replyFirstLvl btn btn-primary">Reply</a>
             </li>
         }
 

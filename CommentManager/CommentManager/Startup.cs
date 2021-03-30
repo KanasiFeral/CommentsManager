@@ -1,5 +1,7 @@
+using CommentManager.Classes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -8,10 +10,7 @@ namespace CommentManager
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        public Startup(IConfiguration configuration) => Configuration = configuration;
 
         public IConfiguration Configuration { get; }
 
@@ -19,6 +18,9 @@ namespace CommentManager
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            // Added context
+            services.AddEntityFrameworkSqlite().AddDbContext<DbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,6 +42,12 @@ namespace CommentManager
             app.UseRouting();
 
             app.UseAuthorization();
+
+            using (var db = new DBContext())
+            {
+                db.Database.EnsureCreated();
+                db.Database.Migrate();
+            }
 
             app.UseEndpoints(endpoints =>
             {
