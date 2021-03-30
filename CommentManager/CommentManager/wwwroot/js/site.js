@@ -8,14 +8,7 @@ function Comments(data) {
             url: "/Home/SingleCommentLvl2",
             type: "POST",
             data: {
-                table: data.table,
-                postId: data.postId,
-                replyCommentId: data.replyCommentId,
-                userId: data.userId,
-                adminId: data.adminId,
-                date: data.date,
-                time: data.time,
-                commentText: data.commentText
+                replyCommentId: data.replyCommentId
             },
             dataType: "html",
             success: function (data) {

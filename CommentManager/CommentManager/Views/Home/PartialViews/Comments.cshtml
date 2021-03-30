@@ -11,29 +11,157 @@
 
     @if (ViewBag.CommentsList != null & ViewBag.CommentsList.Count > 0)
     {
+        List<int> ignoreComments = new List<int>();
+
         foreach (var item in ViewBag.CommentsList)
         {
+            // Data for users from comments list
+
+            string btnReply = "btnReply-" + item.Id;
+
+            string divId = "divId-" + item.Id, divReplyId = "divReplyId-" + item.Id;
+
+            string btnId = "btnId-" + item.Id, btnReplyId = "btnReplyId-" + item.Id;
+
+            @* if comment has no other (reply) comments *@
             <li class="list-group-item">
-                <p>
-                    User: @item.UserName<br />
-                    Data: @item.Message<br />
-                    Date: @item.CommentDate<br />
-                    Time: @item.CommentTime
-                </p>
+                <!-- Comment Content -->
+                <div class="comment-content d-flex">
+                    <!-- Comment Meta -->
+                    <div class="comment-meta">
+                        <p>Date: @item.CommentDate</p>
+
+                        <p>Time: @item.CommentTime</p>
+
+                        <p>Name: @item.UserName</p>
+
+                        <p>Data: @item.Message</p>
+
+                        <div class="d-flex align-items-center">
+                            @*<a href="#" class="like">like</a>*@
+
+                            <a href="javascript: void(0)" name="@btnReply" class="btn btn-primary reply replyFirstLvl">Reply</a>
+
+                            @{
+                                string styleAllComments = "";
+                            }
+
+                            @if (CommentsManager.GetReplyBranchesStatus(item.Id) == true)
+                            {
+                                styleAllComments = "block";
+                            }
+                            else
+                            {
+                                styleAllComments = "none";
+                            }
+
+                            <a href="javascript: void(0)" name="@btnReply" style="display: @styleAllComments; margin-left: 10px" class="btn btn-primary showAllComments">All replies</a>
+
+                            <input type="hidden" class="@btnReply" name="@item.UserName" />
+                        </div>
+
+                        <!-- Reply Form -->
+                        <div class="contact-form-area formComments @btnReply" style="display: none; padding: 10px;">
+                            <hr style="background: white;" />
+                            <p>Leave reply</p>
+                            <form asp-action="LeaveComment" asp-controller="Home" data-ajax="true" data-ajax-method="POST" data-ajax-success="Comments"
+                                  asp-route-replyCommentId="@item.Id" asp-route-page="@ViewBag.Page"
+                                  asp-route-divId="@divId" asp-route-btnId="@btnId" asp-route-secondLvl="true" asp-route-divIdInsert="@btnReply">
+                                <div class="row">
+
+                                    <div class="col-12">
+                                        <label class="form-label">Username</label>
+                                        <input name="userName" type="text" class="form-control" placeholder="Username" required />
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label class="form-label">Message</label>
+                                        <textarea name="message" style="margin-bottom: 10px; font-size: 14px;" maxlength="1024" class="form-control" placeholder="Your message*"></textarea>
+                                    </div>
+
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6" style="margin-bottom: 10px;">
+                                                <button class="btn btn-primary btn-block replyCancel" type="button">Cancel</button>
+                                            </div>
+                                            <div class="col-12 col-md-6">
+                                                <button id="@btnId" class="btn btn-primary btn-block" type="submit">Submit</button>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div style="display: none;" id="@divId"></div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
 
                 @{
-                    string btnReply = "btnReply-" + item.Id;
+                    CommentsManager.CleanReplyBranches();
+                    string replyBranches = CommentsManager.GetSecondLevelComments(item.Id);
 
-                    string divId = "divId-" + item.Id, divReplyId = "divReplyId-" + item.Id;
+                    <div class="@btnReply" style="display: none;">
 
-                    string btnId = "btnId-" + item.Id, btnReplyId = "btnReplyId-" + item.Id;
+                        @if (!string.IsNullOrEmpty(replyBranches))
+                        {
+                            @Html.Raw(replyBranches)
+                        }
+
+                        <input type="hidden" id="" />
+
+                        <ol class="children">
+                            <li class="list-group-item">
+                                <!-- Comment Content -->
+                                <div class="comment-content d-flex">
+                                    <!-- Comment Meta -->
+                                    <div class="comment-meta">
+                                        <!-- Reply Form -->
+                                        <div class="contact-form-area formSecondlvlComments">
+                                            <form asp-action="LeaveComment" asp-controller="Home" data-ajax="true" data-ajax-method="POST" data-ajax-success="Comments"
+                                                  asp-route-replyCommentId="@item.Id" asp-route-page="@ViewBag.Page"
+                                                  asp-route-divId="@divReplyId" asp-route-btnId="@btnReplyId" asp-route-secondLvl="true" asp-route-divIdInsert="@btnReply">
+                                                <div class="container">
+                                                    <div class="row">
+
+                                                        <div class="col-12">
+                                                            <label class="form-label">Username</label>
+                                                            <input name="userName" type="text" class="form-control" placeholder="Username" required />
+                                                        </div>
+
+                                                        <div class="col-12">
+                                                            <label class="form-label">Message</label>
+                                                            <textarea name="message" style="margin-bottom: 10px; font-size: 14px; height: 70px;" maxlength="1024" name="commentText" class="form-control" placeholder="Your message*"></textarea>
+                                                        </div>
+
+                                                        <div class="container">
+                                                            <div class="row">
+                                                                <div class="col-12 col-md-6">
+                                                                    <button class="btn btn-primary btn-block replyCancelSecondLvl" type="button">Cancel</button>
+                                                                </div>
+                                                                <div class="col-12 col-md-6">
+                                                                    <button id="@btnReplyId" class="btn btn-primary btn-block" type="submit">Submit</button>
+                                                                </div>
+                                                            </div>
+                                                            <br />
+                                                            <div style="display: none;" id="@divReplyId"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ol>
+
+                    </div>
                 }
 
-                <a href="javascript: void(0)" name="@btnReply" class="reply replyFirstLvl btn btn-primary">Reply</a>
             </li>
         }
 
-        @Html.PagedListPager((X.PagedList.IPagedList)ViewBag.CommentsList, page => Url.Action("Comments", "Home", new { Page = page }),
+        @Html.PagedListPager((X.PagedList.IPagedList)ViewBag.CommentsList, page => Url.Action("Comments", "Home", new { Page = page, Table = ViewBag.TableComments, Id = ViewBag.Id }),
             PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "POST", UpdateTargetId = "PartialViewId" }))
     }
     else
@@ -44,6 +172,7 @@
             </h4>
         </li>
     }
+
 </ul>
 
 @section Scripts{
@@ -117,24 +246,50 @@
         // Get unique attribute by name (unique "all comments" div id)
         allCommentsId = $(this).attr("name");
 
-        // If the comment reply window is open (first branch), then close it
-        if ($("." + allCommentsId).eq(1).css('display') === "block") {
-            // Close the form
-            $("." + allCommentsId).eq(1).css("display", "none");
-            // Clearing text in textarea
-            $(".formComments textarea").text("");
-            // Opening the reply button by unique name
-            $("a[name='" + allCommentsId + "']").show();
-            // Clear second branch text field
-            $(".formSecondlvlComments textarea").val("");
-        }
+        $.ajax({
+            url: "/Home/CheckSecondBranch",
+            type: "POST",
+            data: {
+                divId: allCommentsId
+            },
+            beforeSend: function () {
+                // Disable all comments button
+                $("#" + allCommentsId).prop('disabled', false);
+            },
+            dataType: "html",
+            success: function (data) {
 
-        // If the block with response comments has the "display" property as "none", then show this block
-        if ($("." + allCommentsId).eq(2).css('display') === "none") {
-            $("." + allCommentsId).eq(2).css("display", "block");
-        }
-        // If the block with response comments has the "display" property as "block", then hide this block
-        else {
-            $("." + allCommentsId).eq(2).css("display", "none");
-        }
+                var result = JSON.parse(data);                
+
+                if (result.status === true) {
+                    // If the comment reply window is open (first branch), then close it
+                    if ($("." + allCommentsId).eq(1).css('display') === "block") {
+                        // Close the form
+                        $("." + allCommentsId).eq(1).css("display", "none");
+                        // Clearing text in textarea
+                        $(".formComments textarea").text("");
+                        // Opening the reply button by unique name
+                        $("a[name='" + allCommentsId + "']").show();
+                        // Clear second branch text field
+                        $(".formSecondlvlComments textarea").val("");
+                    }
+
+                    // If the block with response comments has the "display" property as "none", then show this block
+                    if ($("." + allCommentsId).eq(2).css('display') === "none") {
+                        $("." + allCommentsId).eq(2).css("display", "block");
+                    }
+                    // If the block with response comments has the "display" property as "block", then hide this block
+                    else {
+                        $("." + allCommentsId).eq(2).css("display", "none");
+                    }
+                }
+
+                // Enable all comments button
+                $("#" + allCommentsId).prop('disabled', true);
+            }
+        });
+
+
     });
+
+</script>

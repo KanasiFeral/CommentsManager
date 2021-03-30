@@ -1,0 +1,23 @@
+﻿@model Comment
+
+<ol class="children" style="margin-top: 10px;">
+    <li class="list-group-item">
+        <!-- Comment Content -->
+        <div class="comment-content d-flex">
+            <!-- Comment Meta -->
+            <div class="comment-meta">
+                <p>Date: @Model.CommentDate</p>
+
+                <p>Time: @Model.CommentTime</p>
+
+                <p>Name: @Model.UserName</p>
+
+                <p>Data: @Model.Message</p>
+
+                <div class="d-flex align-items-center">
+                    <a href="javascript: void(0)" class="btn btn-primary replySecondLvl" name="@Model.UserName">Reply</a>
+                </div>
+            </div>
+        </div>
+    </li>
+</ol>

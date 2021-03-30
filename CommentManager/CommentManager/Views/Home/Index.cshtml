@@ -13,7 +13,7 @@
 <hr />
 <section>
     <div class="d-flex justify-content-center">
-        <form asp-controller="Home" asp-action="SendMessage" data-ajax="true" data-ajax-method="Post" data-ajax-success="Comments">
+        <form asp-controller="Home" asp-action="LeaveComment" data-ajax="true" data-ajax-method="Post" data-ajax-success="Comments">
             <!-- Login input -->
             <div class="form-outline mb-4">
                 <label class="form-label">Username</label>
@@ -23,7 +23,7 @@
             <!-- Comment input -->
             <div class="form-outline mb-4">
                 <label class="form-label">Message</label>
-                <textarea name="Message" style="max-height: 200px; height: 50px; min-height: 50px;" id="MessageId" class="form-control" placeholder="Message" required></textarea>
+                <textarea name="message" style="max-height: 200px; height: 50px; min-height: 50px;" id="MessageId" class="form-control" placeholder="Message" required></textarea>
             </div>
 
             <!-- Info block -->
